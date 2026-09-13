@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import userEvent from "@testing-library/user-event";
 import App from "./App";
 
@@ -7,6 +7,10 @@ const { openUrl } = vi.hoisted(() => ({ openUrl: vi.fn() }));
 vi.mock("@tauri-apps/plugin-opener", () => ({ openUrl }));
 
 describe("App", () => {
+  beforeEach(() => {
+    localStorage.clear();
+    openUrl.mockClear();
+  });
   it("renders the product name", () => {
     render(<App />);
 
@@ -21,6 +25,23 @@ describe("App", () => {
     await user.click(screen.getByRole("button", { name: /collections/i }));
     expect(screen.getByRole("heading", { name: /smart collections/i })).toBeInTheDocument();
     expect(screen.getByLabelText(/collection name/i)).toBeInTheDocument();
+  });
+
+  it("offers an IP collection suggestion and adds it on request", async () => {
+    localStorage.setItem("games", JSON.stringify([{
+      appId: 552500,
+      name: "Warhammer: Vermintide 2",
+      playtimeMinutes: 0,
+      installed: false,
+      tags: [],
+    }]));
+    const user = userEvent.setup();
+    render(<App />);
+    await user.click(screen.getByRole("button", { name: /collections/i }));
+
+    expect(screen.getByRole("heading", { name: /suggested collections/i })).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: /add warhammer collection/i }));
+    expect(screen.getByText("Warhammer", { selector: "h3" })).toBeInTheDocument();
   });
 
   it("shows the library workflow", async () => {

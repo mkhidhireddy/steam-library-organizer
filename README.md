@@ -20,7 +20,7 @@ A local-first Windows desktop app for turning a large Steam backlog into useful,
 3. Select **Get API key from Steam**, register a personal key on Valve's page, paste it into the app, and select **Import Steam Library**. The Steam profile's game details must be public for the API to return the library.
 4. Select **Refresh store tags**. Large libraries take time because Steam metadata is fetched per game.
 5. Review detected IPs under **IP Review**.
-6. Create rules under **Collections**, then inspect them under **Export**.
+6. Open **Collections** and add the suggested Warhammer or Star Wars collections with one click, or create a custom rule. Then inspect them under **Export**.
 7. Fully exit Steam, including its system-tray process, and select **Apply to Steam**.
 8. Reopen Steam. The generated collections appear in the Steam Library alongside existing collections.
 

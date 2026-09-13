@@ -16,7 +16,9 @@ The initial catalog recognizes Warhammer-related titles (including Vermintide) a
 
 ## Build collections
 
-Open **Collections**, give the collection a name, and optionally require one store category/genre and one IP. Leaving both rules empty matches the entire imported library. Saving an existing name updates that local definition.
+Open **Collections**. When the imported library contains a recognized IP, the app proposes a corresponding collection and shows its match count. Select **Add … collection** to save the proposed rule; it will not write anything to Steam until you explicitly export it.
+
+You can also give a collection a name and optionally require one store category/genre and one IP. Leaving both rules empty matches the entire imported library. Saving an existing name updates that local definition.
 
 ## Export to Steam
 

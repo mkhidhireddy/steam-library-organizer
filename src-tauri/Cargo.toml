@@ -1,6 +1,6 @@
 [package]
 name = "steam-library-organizer"
-version = "0.1.1"
+version = "0.1.2"
 description = "Organize a Steam library with tags, IPs, and native collections"
 authors = ["mkhidhireddy"]
 edition = "2021"
