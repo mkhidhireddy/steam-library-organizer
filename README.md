@@ -15,7 +15,7 @@ A local-first Windows desktop app for turning a large Steam backlog into useful,
 
 ## Install and use
 
-1. Run the Windows installer from `src-tauri/target/release/bundle/nsis`.
+1. Download and run the Windows installer from the [latest GitHub release](https://github.com/mkhidhireddy/steam-library-organizer/releases/latest).
 2. Get a Steam Web API key from <https://steamcommunity.com/dev/apikey> and find your 64-bit Steam ID.
 3. Open the app, enter both values, and select **Import Steam Library**. The Steam profile's game details must be public for the API to return the library.
 4. Select **Refresh store tags**. Large libraries take time because Steam metadata is fetched per game.
