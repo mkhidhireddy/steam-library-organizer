@@ -1,4 +1,4 @@
-use tauri_app_lib::steam::collections::parser::parse_collection_tags;
+use steam_library_organizer_lib::steam::collections::parser::parse_collection_tags;
 
 #[test]
 fn groups_app_ids_by_their_local_steam_tag() {
