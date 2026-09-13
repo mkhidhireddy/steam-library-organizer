@@ -1,0 +1,34 @@
+"UserLocalConfigStore"
+{
+  "Software"
+  {
+    "Valve"
+    {
+      "Steam"
+      {
+        "apps"
+        {
+          "10"
+          {
+            "tags"
+            {
+              "0" "Managed Co-op RPGs"
+              "1" "Favorite"
+            }
+          }
+          "20"
+          {
+            "tags"
+            {
+              "0" "Managed Co-op RPGs"
+            }
+          }
+          "30"
+          {
+            "LastPlayed" "1700000000"
+          }
+        }
+      }
+    }
+  }
+}
