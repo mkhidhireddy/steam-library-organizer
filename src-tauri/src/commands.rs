@@ -78,6 +78,27 @@ fn find_cloud_file() -> Result<PathBuf, String> {
     }
 }
 
+pub fn steam_id64_from_account_id(account_id: &str) -> Result<String, String> {
+    const STEAM_ID64_OFFSET: u64 = 76_561_197_960_265_728;
+    let account_id = account_id
+        .parse::<u32>()
+        .map_err(|_| "Steam account folder is not numeric".to_owned())?;
+    Ok((STEAM_ID64_OFFSET + u64::from(account_id)).to_string())
+}
+
+#[tauri::command]
+pub fn detect_steam_account() -> Result<String, String> {
+    let cloud_file = find_cloud_file()?;
+    let account_id = cloud_file
+        .parent()
+        .and_then(Path::parent)
+        .and_then(Path::parent)
+        .and_then(Path::file_name)
+        .and_then(|value| value.to_str())
+        .ok_or("Could not identify the Steam account folder")?;
+    steam_id64_from_account_id(account_id)
+}
+
 fn steam_is_running() -> bool {
     Command::new("tasklist")
         .args(["/FI", "IMAGENAME eq steam.exe", "/NH"])

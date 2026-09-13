@@ -2,7 +2,9 @@
 
 ## Import the library
 
-Enter a SteamID64 and Steam Web API key, then select **Import Steam Library**. A private game-details setting, an invalid key, or an invalid Steam ID prevents Steam from returning the library. The key is not saved.
+Select **Use current Steam account** to detect the SteamID64 from the Steam installation on this PC. Then select **Get API key from Steam**, register a personal key on Valve's official page, paste it into the app, and select **Import Steam Library**. A private game-details setting or invalid key prevents Steam from returning the library. The key is not saved.
+
+Steam's normal browser login can prove which user is signing in, but Valve does not grant ordinary desktop applications full-library access through that login. A personal Web API key is therefore still required for the complete owned library. The app never asks for or handles your Steam password.
 
 The import provides game names and playtime. Select **Refresh store tags** to add the genres and categories published in Steam's store metadata. Existing metadata is retained if an individual store request fails.
 

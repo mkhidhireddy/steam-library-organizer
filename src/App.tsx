@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
+import { openUrl } from "@tauri-apps/plugin-opener";
 import "./App.css";
 
 type Game = { appId: number; name: string; playtimeMinutes: number; installed: boolean; tags: string[]; approvedIp?: string | null };
@@ -42,6 +43,15 @@ function App() {
     } catch (error) { setNotice(String(error)); } finally { setBusy(""); }
   }
 
+  async function detectSteamAccount() {
+    setBusy("Finding your current Steam account…"); setNotice("");
+    try {
+      const detected = await invoke<string>("detect_steam_account");
+      setSteamId(detected); localStorage.setItem("steam-id", detected);
+      setNotice("Current Steam account found. Now paste your Web API key and import.");
+    } catch (error) { setNotice(String(error)); } finally { setBusy(""); }
+  }
+
   async function refreshTags() {
     setBusy("Fetching Steam store metadata…"); setNotice("");
     try { const enriched = await invoke<Game[]>("refresh_metadata", { games }); saveGames(enriched); setNotice("Store metadata refreshed."); }
@@ -64,7 +74,7 @@ function App() {
     <section className="workspace">
       {notice && <div className="notice" role="status">{notice}</div>}{busy && <div className="busy">{busy}</div>}
       {view === "library" && <><header className="page-head"><div><p className="kicker">THE SHELF</p><h2>Your Library</h2></div><button onClick={refreshTags} disabled={!games.length || !!busy}>Refresh store tags</button></header>
-        <section className="connection"><label>SteamID64<input value={steamId} onChange={(event) => setSteamId(event.target.value)} placeholder="7656119…"/></label><label>Web API key<input type="password" value={apiKey} onChange={(event) => setApiKey(event.target.value)} placeholder="Not stored"/></label><button onClick={importLibrary} disabled={!!busy}>Import Steam Library</button></section>
+        <section className="connection"><div className="credential"><label>SteamID64<input value={steamId} onChange={(event) => setSteamId(event.target.value)} placeholder="7656119…"/></label><button className="quiet" onClick={detectSteamAccount} disabled={!!busy}>Use current Steam account</button></div><div className="credential"><label>Web API key<input type="password" value={apiKey} onChange={(event) => setApiKey(event.target.value)} placeholder="Not stored"/></label><a href="https://steamcommunity.com/dev/apikey" onClick={(event) => { event.preventDefault(); void openUrl("https://steamcommunity.com/dev/apikey"); }}>Get API key from Steam ↗</a></div><button onClick={importLibrary} disabled={!!busy}>Import Steam Library</button></section>
         <input className="search" aria-label="Search games" value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search your library…"/>
         <div className="game-grid">{filtered.map((game) => <article className="game" key={game.appId}><img src={`https://cdn.cloudflare.steamstatic.com/steam/apps/${game.appId}/header.jpg`} alt=""/><div><p className="playtime">{Math.round(game.playtimeMinutes / 60)}h played</p><h3>{game.name}</h3><div className="chips">{game.tags.slice(0,4).map((value) => <span key={value}>{value}</span>)}{(game.approvedIp || detectIp(game.name)) && <span className="ip">{game.approvedIp || detectIp(game.name)}</span>}</div></div></article>)}</div>{!games.length && <div className="empty"><h3>Bring your backlog into focus.</h3><p>Enter your Steam details above to import every owned game.</p></div>}</>}
       {view === "ips" && <><header className="page-head"><div><p className="kicker">FRANCHISE SIGNALS</p><h2>IP Review</h2></div><span>{suggestions.length} suggestions</span></header><div className="review-list">{suggestions.map((game) => <article key={game.appId}><div><h3>{game.name}</h3><p>Suggested from title evidence</p></div><b>{detectIp(game.name)}</b><button onClick={() => approve(game, detectIp(game.name))}>Approve</button><button className="quiet" onClick={() => approve(game, "None")}>Reject</button></article>)}</div>{!suggestions.length && <div className="empty"><h3>Review queue clear.</h3><p>Import games to generate franchise suggestions.</p></div>}</>}

@@ -1,4 +1,14 @@
+use steam_library_organizer_lib::commands::steam_id64_from_account_id;
 use steam_library_organizer_lib::steam::api::{parse_owned_games, parse_store_metadata};
+
+#[test]
+fn converts_a_local_steam_account_id_to_steam_id64() {
+    assert_eq!(
+        steam_id64_from_account_id("397342093").unwrap(),
+        "76561198357607821"
+    );
+    assert!(steam_id64_from_account_id("not-an-account").is_err());
+}
 
 #[test]
 fn parses_owned_games_response() {

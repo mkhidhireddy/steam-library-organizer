@@ -9,6 +9,7 @@ pub fn run() {
         .plugin(tauri_plugin_opener::init())
         .invoke_handler(tauri::generate_handler![
             commands::sync_library,
+            commands::detect_steam_account,
             commands::refresh_metadata,
             commands::preview_export,
             commands::apply_export
